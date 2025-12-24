@@ -179,7 +179,6 @@
         <h2 style="margin: 0;">Jadwal gaji</h2>
         <div class="flex" style="display: flex; gap: 8px; flex-wrap: wrap;">
           <button class="small-btn secondary" id="reset-storage" type="button">Bersihkan semua data</button>
-          <button class="small-btn secondary" id="export-data" type="button">Export data (JSON)</button>
         </div>
       </div>
       <div id="schedule-list"></div>
@@ -627,19 +626,6 @@
         localStorage.removeItem(storageKey);
         renderSchedules();
       }
-    });
-
-    document.getElementById("export-data").addEventListener("click", () => {
-      const data = loadSchedules();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `salary-tracker-${todayString()}.json`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
     });
 
     const init = () => {
