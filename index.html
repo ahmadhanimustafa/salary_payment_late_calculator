@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tracker Pembayaran & Denda Gaji</title>
+  <title>Salary Payment & Penalty Tracker</title>
   <style>
     :root {
-      --bg: #050915;
-      --panel: #0c1426;
-      --border: #1f2937;
-      --muted: #9ca3af;
-      --text: #e5e7eb;
+      color-scheme: light;
+      --bg: #0f172a;
+      --panel: #111827;
       --accent: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
       --danger: #f97316;
-      --shadow: rgba(0, 0, 0, 0.4);
+      --shadow: rgba(0, 0, 0, 0.35);
       font-family: "Inter", system-ui, -apple-system, sans-serif;
     }
 
@@ -21,31 +22,32 @@
       margin: 0;
       background: radial-gradient(circle at 20% 20%, #0b1224, #050915 45%),
         radial-gradient(circle at 80% 0%, #0f172a, #050915 50%),
-        var(--bg);
+        #050915;
       color: var(--text);
+      min-height: 100vh;
     }
 
     header {
+      padding: 32px 16px 16px;
       max-width: 1100px;
       margin: 0 auto;
-      padding: 32px 16px 12px;
     }
 
     h1 {
       margin: 0;
-      font-size: 30px;
+      font-size: 32px;
       letter-spacing: -0.02em;
     }
 
     p.lead {
-      margin: 10px 0 0;
       color: var(--muted);
-      line-height: 1.5;
+      margin: 12px 0 20px;
+      line-height: 1.6;
     }
 
     .layout {
       max-width: 1100px;
-      margin: 0 auto;
+      margin: 0 auto 48px;
       padding: 0 16px 32px;
       display: grid;
       grid-template-columns: 1fr;
@@ -64,13 +66,23 @@
         var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 18px;
+      padding: 20px;
       box-shadow: 0 16px 40px var(--shadow);
     }
 
-    .panel h2 { margin: 0 0 12px; letter-spacing: -0.01em; }
+    .panel h2 {
+      margin-top: 0;
+      letter-spacing: -0.01em;
+    }
 
-    label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 14px; }
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
 
     input, select, button {
       border-radius: 10px;
@@ -104,9 +116,12 @@
       box-shadow: none;
     }
 
-    .small-btn { padding: 8px 10px; font-size: 13px; border-radius: 8px; }
-
-    .hint { color: var(--muted); font-size: 13px; margin: 4px 0 10px; }
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: -6px;
+      margin-bottom: 12px;
+    }
 
     .schedules-empty {
       padding: 18px;
@@ -117,30 +132,116 @@
       background: #0b1220;
     }
 
-    .card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; background: #0c1426; margin-bottom: 14px; }
-    .card-header { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; }
-    .badge { padding: 6px 10px; border-radius: 20px; font-size: 12px; background: rgba(34, 197, 94, 0.12); color: #7bed9f; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      background: #0c1426;
+      margin-bottom: 14px;
+    }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 10px 0; }
-    .metric { border: 1px solid var(--border); border-radius: 10px; padding: 12px; background: #0b1220; }
-    .metric span { color: var(--muted); font-size: 13px; }
-    .metric strong { display: block; margin-top: 6px; font-size: 18px; }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+    }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
-    th, td { padding: 9px 8px; border-bottom: 1px solid var(--border); }
-    th { text-align: left; color: var(--muted); font-weight: 500; }
+    .badge {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #7bed9f;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
 
-    .note { background: #0b1220; border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: var(--muted); line-height: 1.6; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      background: #0b1220;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 6px;
+      font-size: 18px;
+    }
+
+    .payments {
+      margin-top: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .muted { color: var(--muted); }
     .danger { color: var(--danger); }
+
+    .flex {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      padding: 8px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      background: #111a2f;
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: none;
+    }
+
+    .note {
+      background: #0c1426;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Tracker Pembayaran & Denda Gaji</h1>
+    <h1>Salary Payment & Penalty Tracker</h1>
     <p class="lead">
-      Catat jadwal gajian bulanan, pembayaran (penuh/parsial), rencana bayar, dan denda progresif.
-      Denda 5%/hari mulai hari ke-4 s.d ke-8, lalu +1%/hari setelah hari ke-8 (maks 50% gaji/bulan),
-      serta bunga (opsional) setelah lewat 30 hari. Perhitungan otomatis lanjut sampai hari ini jika masih ada sisa gaji.
+      Catat jatuh tempo gaji, pembayaran bertahap, dan denda keterlambatan berdasarkan
+      aturan progresif (5% per hari mulai hari ke-4, +1% per hari setelah hari ke-8,
+      maksimum 50% per bulan, ditambah bunga setelah sebulan).
     </p>
   </header>
 
@@ -154,32 +255,29 @@
         </label>
 
         <label>
-          Tanggal jatuh tempo gaji (tanggal gajian setiap bulan)
+          Tanggal jatuh tempo gaji
           <input type="date" name="dueDate" required />
         </label>
-        <p class="hint">Gunakan tanggal gajian bulanan (misal tanggal 1 tiap bulan) untuk periode yang dicatat.</p>
 
         <label>
           Hitung denda sampai tanggal
           <input type="date" name="asOfDate" required />
         </label>
-        <p class="hint">Tanggal referensi bisa diubah kapan saja. Jika masih ada sisa gaji, denda otomatis dihitung sampai hari ini.</p>
+        <p class="hint">Tanggal ini bisa diubah per jadwal untuk melihat akumulasi denda terkini.</p>
 
         <label>
           Estimasi bunga bank per bulan (%), mulai dikenakan setelah lewat 30 hari (opsional)
           <input type="number" name="interestRate" min="0" step="0.01" placeholder="0" />
         </label>
 
-        <button type="submit" style="width: 100%; margin-top: 6px;">Simpan jadwal</button>
+        <button type="submit">Simpan jadwal</button>
       </form>
     </section>
 
     <section class="panel">
-      <div class="card-header" style="margin: -6px 0 8px;">
+      <div class="flex" style="justify-content: space-between; align-items: center; margin-bottom: 6px;">
         <h2 style="margin: 0;">Jadwal gaji</h2>
-        <div class="flex" style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <button class="small-btn secondary" id="reset-storage" type="button">Bersihkan semua data</button>
-        </div>
+        <button class="small-btn" id="reset-storage" type="button">Bersihkan semua data</button>
       </div>
       <div id="schedule-list"></div>
     </section>
@@ -190,24 +288,24 @@
       <h2>Panduan rumus</h2>
       <div class="note">
         <ul>
-          <li>Denda 5% per hari untuk hari ke-4 s.d ke-8 atas sisa gaji belum dibayar.</li>
-          <li>Mulai hari ke-9 berlaku tambahan 1% per hari. Total denda dasar dibatasi 50% dari gaji.</li>
-          <li>Lewat 30 hari, bunga harian = (bunga per bulan / 30) * sisa gaji. Bunga di luar batas 50%.</li>
-          <li>Pembayaran parsial mengurangi sisa gaji; denda berikutnya dihitung dari sisa terbaru.</li>
-          <li>Jika masih ada sisa gaji, perhitungan otomatis memakai tanggal hari ini meski tanggal referensi lampau.</li>
+          <li>Denda 5% per hari dari hari ke-4 sampai ke-8 atas sisa gaji yang belum dibayar.</li>
+          <li>Mulai hari ke-9 berlaku tambahan 1% per hari. Total denda bagian ini dibatasi 50% dari gaji pokok.</li>
+          <li>Lewat 30 hari, bunga bank (isi sesuai suku bunga tertinggi yang berlaku) dihitung harian = (bunga/30) * sisa gaji.</li>
+          <li>Pembayaran parsial mengurangi sisa gaji; denda harian berikutnya dihitung dari sisa tersebut.</li>
+          <li>Denda dasar (5% + 1%) tetap dibatasi 50% gaji, bunga bank dihitung di luar batas tersebut.</li>
         </ul>
       </div>
     </section>
   </div>
 
   <script>
-    const storageKey = "salary-tracker-schedules";
+    const storageKey = "salary-payment-schedules";
 
     const todayString = () => {
       const now = new Date();
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const d = String(now.getDate()).padStart(2, "0");
-      return `${now.getFullYear()}-${m}-${d}`;
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      return `${now.getFullYear()}-${month}-${day}`;
     };
 
     const parseDate = (value) => {
@@ -215,26 +313,36 @@
       return new Date(Date.UTC(y, m - 1, d));
     };
 
-    const formatDateInput = (date) => date.toISOString().slice(0, 10);
-
     const daysLate = (dueDate, targetDate) => {
       const diff = targetDate - dueDate;
       return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
     };
 
-    const formatCurrency = (value) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(value || 0);
+    const formatCurrency = (value) => {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0,
+      }).format(value || 0);
+    };
 
     const loadSchedules = () => {
       const stored = localStorage.getItem(storageKey);
       if (!stored) return [];
-      try { return JSON.parse(stored); } catch (e) { return []; }
+      try {
+        return JSON.parse(stored);
+      } catch (e) {
+        return [];
+      }
     };
 
-    const saveSchedules = (schedules) => localStorage.setItem(storageKey, JSON.stringify(schedules));
+    const saveSchedules = (schedules) => {
+      localStorage.setItem(storageKey, JSON.stringify(schedules));
+    };
 
-    const uniqueId = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    const uniqueId = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36));
 
-    const overlapDays = (start, end, rangeStart, rangeEnd = Infinity) => {
+    const overlap = (start, end, rangeStart, rangeEnd = Infinity) => {
       const from = Math.max(start, rangeStart);
       const to = Math.min(end, rangeEnd);
       return Math.max(0, to - from + 1);
@@ -243,15 +351,17 @@
     const calculatePenaltySegment = (dueDate, startDate, endDate, outstanding, salary, interestRate) => {
       const startDay = Math.max(1, daysLate(dueDate, startDate) + 1);
       const endDay = daysLate(dueDate, endDate);
-      if (endDay < startDay || outstanding <= 0) return { base: 0, interest: 0 };
+      if (endDay < startDay || outstanding <= 0) {
+        return { base: 0, interest: 0 };
+      }
 
-      const fivePctDays = overlapDays(startDay, endDay, 4, 8);
-      const onePctDays = overlapDays(startDay, endDay, 9);
+      const fivePctDays = overlap(startDay, endDay, 4, 8);
+      const onePctDays = overlap(startDay, endDay, 9);
       const basePenalty = fivePctDays * 0.05 * outstanding + onePctDays * 0.01 * outstanding;
 
-      const interestDays = overlapDays(startDay, endDay, 31);
-      const dailyInterest = (interestRate || 0) / 100 / 30;
-      const interest = interestDays * dailyInterest * outstanding;
+      const interestDays = overlap(startDay, endDay, 31);
+      const dailyInterestRate = (interestRate || 0) / 100 / 30;
+      const interest = interestDays * dailyInterestRate * outstanding;
 
       return { base: basePenalty, interest };
     };
@@ -259,8 +369,7 @@
     const computeSchedule = (schedule) => {
       const salary = Number(schedule.salary) || 0;
       const dueDate = parseDate(schedule.dueDate);
-      const requestedAsOf = parseDate(schedule.asOfDate || todayString());
-      const today = parseDate(todayString());
+      const asOfDate = parseDate(schedule.asOfDate || todayString());
       const interestRate = Number(schedule.interestRate) || 0;
       const payments = [...(schedule.payments || [])].sort((a, b) => parseDate(a.date) - parseDate(b.date));
 
@@ -282,8 +391,7 @@
         cursorDate = payDate;
       }
 
-      const effectiveAsOf = outstanding > 0 ? today : requestedAsOf;
-      const finalSegment = calculatePenaltySegment(dueDate, cursorDate, effectiveAsOf, outstanding, salary, interestRate);
+      const finalSegment = calculatePenaltySegment(dueDate, cursorDate, asOfDate, outstanding, salary, interestRate);
       basePenaltyTotal += finalSegment.base;
       interestTotal += finalSegment.interest;
 
@@ -296,101 +404,22 @@
         paid,
         outstanding,
         basePenaltyTotal,
-        interestTotal,
         cappedBase,
+        interestTotal,
         totalPenalty,
         totalDue,
         payments,
-        requestedAsOf,
-        effectiveAsOf,
-        requestedAsOfInput: formatDateInput(requestedAsOf),
-        effectiveAsOfInput: formatDateInput(effectiveAsOf),
+        asOfDate,
       };
     };
 
-    const addSchedule = (data) => {
-      const schedules = loadSchedules();
-      schedules.push({
-        id: uniqueId(),
-        salary: data.salary,
-        dueDate: data.dueDate,
-        asOfDate: data.asOfDate,
-        interestRate: data.interestRate,
-        payments: [],
-        plannedPayments: [],
-      });
-      saveSchedules(schedules);
-    };
-
-    const addPayment = (scheduleId, payload) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      const payAmount = payload.mode === "percent" ? (payload.value / 100) * Number(schedule.salary) : payload.value;
-      const currentOutstanding = Number(schedule.salary) - (schedule.payments || []).reduce((sum, p) => sum + Number(p.amount || 0), 0);
-      const finalAmount = Math.min(payAmount, currentOutstanding);
-      const payment = { id: uniqueId(), date: payload.date, amount: finalAmount, mode: payload.mode, original: payload.value };
-      schedule.payments = [...(schedule.payments || []), payment];
-      saveSchedules(schedules);
-    };
-
-    const addPlan = (scheduleId, payload) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      const planAmount = payload.mode === "percent" ? (payload.value / 100) * Number(schedule.salary) : payload.value;
-      const plan = { id: uniqueId(), date: payload.date, amount: planAmount, mode: payload.mode, original: payload.value };
-      schedule.plannedPayments = [...(schedule.plannedPayments || []), plan];
-      saveSchedules(schedules);
-    };
-
-    const markPlanPaid = (scheduleId, planId) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      schedule.plannedPayments = schedule.plannedPayments || [];
-      const plan = schedule.plannedPayments.find((p) => p.id === planId);
-      if (!plan) return;
-
-      const currentOutstanding = Number(schedule.salary) - (schedule.payments || []).reduce((sum, p) => sum + Number(p.amount || 0), 0);
-      const finalAmount = Math.min(plan.amount, currentOutstanding);
-      const payment = { ...plan, amount: finalAmount, id: uniqueId() };
-      schedule.payments = [...(schedule.payments || []), payment];
-      schedule.plannedPayments = schedule.plannedPayments.filter((p) => p.id !== planId);
-      saveSchedules(schedules);
-    };
-
-    const removePayment = (scheduleId, paymentId) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      schedule.payments = (schedule.payments || []).filter((p) => p.id !== paymentId);
-      saveSchedules(schedules);
-    };
-
-    const removePlan = (scheduleId, planId) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      schedule.plannedPayments = (schedule.plannedPayments || []).filter((p) => p.id !== planId);
-      saveSchedules(schedules);
-    };
-
-    const updateAsOf = (scheduleId, value) => {
-      const schedules = loadSchedules();
-      const schedule = schedules.find((s) => s.id === scheduleId);
-      if (!schedule) return;
-      schedule.asOfDate = value;
-      saveSchedules(schedules);
-    };
-
     const renderSchedules = () => {
-      const container = document.getElementById("schedule-list");
+      const wrapper = document.getElementById("schedule-list");
       const schedules = loadSchedules();
-      container.innerHTML = "";
+      wrapper.innerHTML = "";
 
       if (!schedules.length) {
-        container.innerHTML = '<div class="schedules-empty">Belum ada jadwal gaji. Tambahkan di sisi kiri.</div>';
+        wrapper.innerHTML = '<div class="schedules-empty">Belum ada jadwal gaji. Tambahkan di sisi kiri.</div>';
         return;
       }
 
@@ -399,78 +428,36 @@
         const card = document.createElement("article");
         card.className = "card";
 
-        const paymentsTable = summary.payments.length
-          ? `<table>
-              <thead>
-                <tr>
-                  <th>Tanggal</th>
-                  <th>Jenis</th>
-                  <th>Nilai</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                ${summary.payments
-                  .map((p) => {
-                    const kind = p.mode === "percent" ? `${p.original}% (dari gaji)` : "Rupiah";
-                    const amount = p.mode === "percent" ? `${formatCurrency(p.amount)} (${p.original}%)` : formatCurrency(p.amount);
-                    return `<tr>
-                      <td>${p.date}</td>
-                      <td>${kind}</td>
-                      <td>${amount}</td>
-                      <td><button type="button" class="small-btn secondary" data-action="remove-payment" data-id="${schedule.id}" data-payment="${p.id}">Hapus</button></td>
-                    </tr>`;
-                  })
-                  .join("")}
-              </tbody>
-            </table>`
-          : '<div class="muted" style="margin-top: 6px;">Belum ada pembayaran.</div>';
-
-        const plannedTable = (schedule.plannedPayments || []).length
-          ? `<table style="margin-top: 10px;">
-              <thead>
-                <tr>
-                  <th>Tanggal</th>
-                  <th>Nilai</th>
-                  <th colspan="2"></th>
-                </tr>
-              </thead>
-              <tbody>
-                ${schedule.plannedPayments
-                  .map((p) => {
-                    const amount = p.mode === "percent"
-                      ? `${formatCurrency((p.original / 100) * Number(schedule.salary))} (${p.original}%)`
-                      : formatCurrency(p.amount);
-                    return `<tr>
-                      <td>${p.date}</td>
-                      <td>${amount}</td>
-                      <td><button type="button" class="small-btn" data-action="mark-paid" data-id="${schedule.id}" data-plan="${p.id}">Tandai sudah dibayar</button></td>
-                      <td><button type="button" class="small-btn secondary" data-action="remove-plan" data-id="${schedule.id}" data-plan="${p.id}">Hapus</button></td>
-                    </tr>`;
-                  })
-                  .join("")}
-              </tbody>
-            </table>`
-          : '<div class="muted" style="margin-top: 8px;">Belum ada rencana pembayaran.</div>';
-
         card.innerHTML = `
           <div class="card-header">
             <div>
-              <strong>Jatuh tempo gajian (per bulan): ${schedule.dueDate}</strong>
-              <div class="hint" style="margin: 2px 0 0;">
-                Dihitung sampai: ${summary.effectiveAsOfInput}
-                ${summary.effectiveAsOfInput !== summary.requestedAsOfInput ? "(otomatis sampai hari ini karena masih ada sisa gaji)" : ""}
-              </div>
+              <strong>Jatuh tempo: ${schedule.dueDate}</strong>
+              <div class="muted">Dihitung sampai: ${schedule.asOfDate}</div>
             </div>
             <span class="badge">${formatCurrency(schedule.salary)}</span>
           </div>
 
           <div class="grid">
-            <div class="metric"><span>Total gaji</span><strong>${formatCurrency(summary.salary)}</strong></div>
-            <div class="metric"><span>Sudah dibayar</span><strong>${formatCurrency(summary.paid)}</strong></div>
-            <div class="metric"><span>Sisa gaji</span><strong>${formatCurrency(summary.outstanding)}</strong></div>
-            <div class="metric"><span>Denda (termasuk bunga)</span><strong class="danger">${formatCurrency(summary.totalPenalty)}</strong></div>
-            <div class="metric"><span>Total harus dibayar</span><strong>${formatCurrency(summary.totalDue)}</strong></div>
+            <div class="metric">
+              <span>Total gaji</span>
+              <strong>${formatCurrency(summary.salary)}</strong>
+            </div>
+            <div class="metric">
+              <span>Sudah dibayar</span>
+              <strong>${formatCurrency(summary.paid)}</strong>
+            </div>
+            <div class="metric">
+              <span>Sisa gaji</span>
+              <strong>${formatCurrency(summary.outstanding)}</strong>
+            </div>
+            <div class="metric">
+              <span>Denda (termasuk bunga)</span>
+              <strong class="danger">${formatCurrency(summary.totalPenalty)}</strong>
+            </div>
+            <div class="metric">
+              <span>Total harus dibayar</span>
+              <strong>${formatCurrency(summary.totalDue)}</strong>
+            </div>
           </div>
 
           <div class="note" style="margin-top: 8px;">
@@ -480,7 +467,7 @@
           </div>
 
           <div class="payments">
-            <h3 style="margin: 12px 0 8px;">Catat pembayaran</h3>
+            <h3 style="margin: 10px 0 8px;">Catat pembayaran</h3>
             <form class="payment-form" data-id="${schedule.id}">
               <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
                 <label>
@@ -499,50 +486,42 @@
                   </select>
                 </label>
               </div>
-              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
+              <div class="flex" style="margin-top: 8px;">
                 <button type="submit" class="small-btn">Tambah pembayaran</button>
                 <button type="button" class="small-btn secondary" data-action="update-asof" data-id="${schedule.id}">Perbarui tanggal hitung</button>
               </div>
               <div class="hint">Pembayaran persentase dihitung dari gaji pokok dan otomatis dibatasi ke sisa gaji.</div>
             </form>
 
-            ${paymentsTable}
-
-            <div class="note" style="margin-top: 12px;">
-              <strong>Jadwal pembayaran (rencana)</strong>
-              <form class="plan-form" data-id="${schedule.id}" style="margin-top: 10px;">
-                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
-                  <label>
-                    Tanggal rencana bayar
-                    <input type="date" name="planDate" required />
-                  </label>
-                  <label>
-                    Nilai rencana
-                    <input type="number" name="planValue" step="0.01" min="0" required placeholder="1000000" />
-                  </label>
-                  <label>
-                    Mode nilai
-                    <select name="planMode">
-                      <option value="amount">Rupiah</option>
-                      <option value="percent">Persentase dari gaji</option>
-                    </select>
-                  </label>
-                </div>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
-                  <button type="submit" class="small-btn">Tambah rencana bayar</button>
-                </div>
-                <div class="hint">Rencana belum memengaruhi denda sampai ditandai sudah dibayar.</div>
-              </form>
-              ${plannedTable}
-            </div>
+            ${summary.payments.length
+              ? `<table>
+                  <thead>
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Jenis</th>
+                      <th>Nilai</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${summary.payments
+                      .map((p) => {
+                        const kind = p.mode === "percent" ? `${p.original}% (dari gaji)` : "Rupiah";
+                        const amount = p.mode === "percent"
+                          ? `${formatCurrency(p.amount)} (${p.original}%)`
+                          : formatCurrency(p.amount);
+                        return `<tr><td>${p.date}</td><td>${kind}</td><td>${amount}</td></tr>`;
+                      })
+                      .join("")}
+                  </tbody>
+                </table>`
+              : '<div class="muted" style="margin-top: 6px;">Belum ada pembayaran.</div>'}
           </div>
         `;
 
-        container.appendChild(card);
+        wrapper.appendChild(card);
       });
 
       bindPaymentForms();
-      bindPlanForms();
     };
 
     const bindPaymentForms = () => {
@@ -550,13 +529,34 @@
         const scheduleId = form.dataset.id;
         const asOfBtn = form.querySelector('[data-action="update-asof"]');
 
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
           const paymentDate = form.paymentDate.value;
           const paymentValue = Number(form.paymentValue.value);
           const mode = form.paymentMode.value;
           if (!paymentDate || !paymentValue) return;
-          addPayment(scheduleId, { date: paymentDate, value: paymentValue, mode });
+
+          const schedules = loadSchedules();
+          const schedule = schedules.find((s) => s.id === scheduleId);
+          if (!schedule) return;
+
+          const payAmount = mode === "percent"
+            ? (paymentValue / 100) * Number(schedule.salary)
+            : paymentValue;
+
+          const currentOutstanding = Number(schedule.salary) - (schedule.payments || []).reduce((sum, p) => sum + Number(p.amount || 0), 0);
+          const finalAmount = Math.min(payAmount, currentOutstanding);
+
+          const payment = {
+            id: uniqueId(),
+            date: paymentDate,
+            amount: finalAmount,
+            mode,
+            original: paymentValue,
+          };
+
+          schedule.payments = [...(schedule.payments || []), payment];
+          saveSchedules(schedules);
           renderSchedules();
           form.reset();
         });
@@ -564,60 +564,38 @@
         asOfBtn?.addEventListener("click", () => {
           const asOf = prompt("Hitung denda sampai tanggal (YYYY-MM-DD):", todayString());
           if (!asOf) return;
-          updateAsOf(scheduleId, asOf);
-          renderSchedules();
-        });
-      });
-
-      document.querySelectorAll('[data-action="remove-payment"]').forEach((btn) => {
-        btn.addEventListener("click", () => {
-          removePayment(btn.dataset.id, btn.dataset.payment);
-          renderSchedules();
-        });
-      });
-    };
-
-    const bindPlanForms = () => {
-      document.querySelectorAll(".plan-form").forEach((form) => {
-        const scheduleId = form.dataset.id;
-        form.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const planDate = form.planDate.value;
-          const planValue = Number(form.planValue.value);
-          const mode = form.planMode.value;
-          if (!planDate || !planValue) return;
-          addPlan(scheduleId, { date: planDate, value: planValue, mode });
-          renderSchedules();
-          form.reset();
-        });
-      });
-
-      document.querySelectorAll('[data-action="mark-paid"]').forEach((btn) => {
-        btn.addEventListener("click", () => {
-          markPlanPaid(btn.dataset.id, btn.dataset.plan);
-          renderSchedules();
-        });
-      });
-
-      document.querySelectorAll('[data-action="remove-plan"]').forEach((btn) => {
-        btn.addEventListener("click", () => {
-          removePlan(btn.dataset.id, btn.dataset.plan);
+          const schedules = loadSchedules();
+          const schedule = schedules.find((s) => s.id === scheduleId);
+          if (!schedule) return;
+          schedule.asOfDate = asOf;
+          saveSchedules(schedules);
           renderSchedules();
         });
       });
     };
 
-    document.getElementById("salary-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const data = new FormData(e.target);
+    document.getElementById("salary-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(event.target);
       const salary = Number(data.get("salary"));
       const dueDate = data.get("dueDate");
       const asOfDate = data.get("asOfDate");
       const interestRate = Number(data.get("interestRate")) || 0;
       if (!salary || !dueDate || !asOfDate) return;
-      addSchedule({ salary, dueDate, asOfDate, interestRate });
-      e.target.reset();
-      e.target.asOfDate.value = todayString();
+
+      const schedules = loadSchedules();
+      schedules.push({
+        id: uniqueId(),
+        salary,
+        dueDate,
+        asOfDate,
+        interestRate,
+        payments: [],
+      });
+
+      saveSchedules(schedules);
+      event.target.reset();
+      event.target.asOfDate.value = todayString();
       renderSchedules();
     });
 
@@ -629,7 +607,8 @@
     });
 
     const init = () => {
-      document.querySelector('#salary-form [name="asOfDate"]').value = todayString();
+      const salaryForm = document.getElementById("salary-form");
+      salaryForm.asOfDate.value = todayString();
       renderSchedules();
     };
 
